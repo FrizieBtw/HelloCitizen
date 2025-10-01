@@ -32,10 +32,12 @@ public class ResidentDao {
         }
     }
 
-    public void delete(Long id) {
+    public boolean delete(Long id) {
         Resident r = em.find(Resident.class, id);
         if (r != null) {
             em.remove(r);
+            return true;
         }
+        return false;
     }
 }
