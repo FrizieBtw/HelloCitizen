@@ -51,6 +51,9 @@ public class GiftService
             gift.setPrice(giftDetails.getPrice());
         if (giftDetails.getCodeBarres() != null)
             gift.setCodeBarres(giftDetails.getCodeBarres());
+        if (giftDetails.getLibelle() != null)
+            gift.setLibelle(giftDetails.getLibelle());
+
 
         return giftDao.save(gift);
     }

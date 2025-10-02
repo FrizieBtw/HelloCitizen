@@ -15,11 +15,14 @@ public class Gift {
     @Column(nullable = false)
     private Integer ageMax;
 
-    @Column(unique = false)
+    @Column(unique = true, nullable = false)
     private String codeBarres;
 
-    @Column(unique = true)
+    @Column(nullable = false)
     private Double price;
+
+    @Column(nullable = false)
+    private String libelle;
 
     public Gift(Long id) {
         this.id = id;
@@ -62,6 +65,14 @@ public class Gift {
 
     public Double getPrice() {
         return price;
+    }
+
+    public String getLibelle() {
+        return libelle;
+    }
+
+    public void setLibelle(String libelle) {
+        this.libelle = libelle;
     }
 
     public void setPrice(Double price) {
