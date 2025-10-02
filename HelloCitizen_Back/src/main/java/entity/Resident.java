@@ -2,7 +2,7 @@ package entity;
 
 import jakarta.persistence.*;
 
-import java.util.Date;
+import java.time.LocalDate;
 
 @Entity
 public class Resident {
@@ -18,7 +18,7 @@ public class Resident {
     private String lastName;
 
     @Temporal(TemporalType.DATE)
-    private Date birthday;
+    private LocalDate birthday;
 
     @Column(unique = true)
     private String email;
@@ -29,10 +29,10 @@ public class Resident {
     private String address;
 
     @Temporal(TemporalType.DATE)
-    private Date arrivalDate;
+    private LocalDate arrivalDate;
 
     @Temporal(TemporalType.DATE)
-    private Date notificationDate;
+    private LocalDate notificationDate;
 
     public Resident(Long id) {
         this.id = id;
@@ -57,11 +57,11 @@ public class Resident {
         this.address = address;
     }
 
-    public Date getArrivalDate() {
+    public LocalDate getArrivalDate() {
         return arrivalDate;
     }
 
-    public void setArrivalDate(Date arrivalDate) {
+    public void setArrivalDate(LocalDate arrivalDate) {
         this.arrivalDate = arrivalDate;
     }
 
@@ -73,11 +73,11 @@ public class Resident {
         this.number = number;
     }
 
-    public Date getNotificationDate() {
+    public LocalDate getNotificationDate() {
         return notificationDate;
     }
 
-    public void setNotificationDate(Date notificationDate) {
+    public void setNotificationDate(LocalDate notificationDate) {
         this.notificationDate = notificationDate;
     }
 
@@ -105,11 +105,11 @@ public class Resident {
         this.email = email;
     }
 
-    public Date getBirthday() {
+    public LocalDate getBirthday() {
         return birthday;
     }
 
-    public void setBirthday(Date birthday) {
+    public void setBirthday(LocalDate birthday) {
         this.birthday = birthday;
     }
 }
