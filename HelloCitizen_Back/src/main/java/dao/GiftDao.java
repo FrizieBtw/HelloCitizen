@@ -23,18 +23,21 @@ public class GiftDao {
         return em.find(Gift.class, id);
     }
 
-    public void save(Gift gift) {
+    public Gift save(Gift gift) {
         if (gift.getId() == null) {
             em.persist(gift);
+            return gift;
         } else {
-            em.merge(gift);
+            return em.merge(gift);
         }
     }
 
-    public void delete(Long id) {
-        Gift r = em.find(Gift.class, id);
-        if (r != null) {
-            em.remove(r);
+    public boolean delete(Long id) {
+        Gift g = em.find(Gift.class, id);
+        if (g != null) {
+            em.remove(g);
+            return true;
         }
+        return false;
     }
 }

@@ -10,16 +10,16 @@ public class Gift {
     private Long id;
 
     @Column(nullable = false)
-    private int ageMin;
+    private Integer ageMin;
 
     @Column(nullable = false)
-    private int ageMax;
+    private Integer ageMax;
 
     @Column(unique = false)
     private String codeBarres;
 
     @Column(unique = true)
-    private double price;
+    private Double price;
 
     public Gift(Long id) {
         this.id = id;
@@ -36,19 +36,19 @@ public class Gift {
         return id;
     }
 
-    public int getAgeMin() {
+    public Integer getAgeMin() {
         return ageMin;
     }
 
-    public void setAgeMin(int ageMin) {
+    public void setAgeMin(Integer ageMin) {
         this.ageMin = ageMin;
     }
 
-    public int getAgeMax() {
+    public Integer getAgeMax() {
         return ageMax;
     }
 
-    public void setAgeMax(int ageMax) {
+    public void setAgeMax(Integer ageMax) {
         this.ageMax = ageMax;
     }
 
@@ -60,11 +60,11 @@ public class Gift {
         this.codeBarres = codeBarres;
     }
 
-    public double getPrice() {
+    public Double getPrice() {
         return price;
     }
 
-    public void setPrice(double price) {
+    public void setPrice(Double price) {
         this.price = price;
     }
 }
