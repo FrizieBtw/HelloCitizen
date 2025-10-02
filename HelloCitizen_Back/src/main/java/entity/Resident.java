@@ -5,7 +5,7 @@ import jakarta.persistence.*;
 import java.util.Date;
 
 @Entity
-public class resident {
+public class Resident {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -34,11 +34,11 @@ public class resident {
     @Temporal(TemporalType.DATE)
     private Date notificationDate;
 
-    public resident(Long id) {
+    public Resident(Long id) {
         this.id = id;
     }
 
-    public resident() {
+    public Resident() {
     }
 
     public void setId(Long id) {
