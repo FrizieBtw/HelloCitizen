@@ -4,6 +4,7 @@ import entity.Attribution;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import jakarta.transaction.Transactional;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -43,7 +44,12 @@ public class AttributionDao {
     }
 
     public Attribution findByResidentId(Long residentId) {
-        return em.createQuery("SELECT a FROM Attribution a WHERE Attribution.resident = :residentId", Attribution.class)
-                .setParameter("residentId", residentId).getSingleResult();
+        List<Attribution> results = em.createQuery(
+                        "SELECT a FROM Attribution a WHERE a.resident.id = :residentId",
+                        Attribution.class)
+                .setParameter("residentId", residentId)
+                .getResultList();
+
+        return results.isEmpty() ? null : results.getFirst();
     }
 }

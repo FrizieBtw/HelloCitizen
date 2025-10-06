@@ -10,16 +10,17 @@ document.addEventListener("DOMContentLoaded", () => {
                 .then(res => res.text())
                 .then(html => {
                     contentDiv.innerHTML = html;
-
-                    if (view.includes("habitants.html")) {
-                        loadResidents();
-                    } else if (view.includes("habitantCreation.html")) {
-                        setupCreateForm();
-                    } else if (view.includes("cadeaux.html")) {
-                        loadGifts();
-                    } else if (view.includes("cadeauCreation.html")) {
-                        setupGiftForm();
-                    }
+                    setTimeout(() => {
+                        if (view.includes("habitants.html")) {
+                            loadResidents();
+                        } else if (view.includes("habitantCreation.html")) {
+                            setupCreateForm();
+                        } else if (view.includes("cadeaux.html")) {
+                            loadGifts();
+                        } else if (view.includes("cadeauCreation.html")) {
+                            setupGiftForm();
+                        }
+                    }, 0);
                 });
         });
     });
@@ -35,7 +36,7 @@ function setupCreateForm(residentId = null) {
         formTitle.textContent = "Modifier un habitant";
         submitButton.textContent = "Modifier";
 
-        fetch(`http://127.0.0.1:8080/residents/${residentId}`)
+        fetch(`http://127.0.0.1:8080/api/residents/${residentId}`)
             .then(res => res.json())
             .then(data => {
                 idInput.value = data.id;
@@ -85,9 +86,9 @@ function setupCreateForm(residentId = null) {
             notificationDate: document.getElementById("notificationDate").value || null
         };
 
-        const id = idInput.value;
+        const id = idInput ? idInput.value : null;
         const method = id ? "PUT" : "POST";
-        const url = id ? `http://127.0.0.1:8080/residents/${id}` : "http://127.0.0.1:8080/residents";
+        const url = id ? `http://127.0.0.1:8080/api/residents/${id}` : "http://127.0.0.1:8080/api/residents";
 
         fetch(url, {
             method,
@@ -99,7 +100,6 @@ function setupCreateForm(residentId = null) {
             return res.json();
         })
         .then(data => {
-            alert(`Habitant ${id ? "modifié" : "créé"} avec succès : ${data.firstName} ${data.lastName}`);
             const contentDiv = document.getElementById("content");
             fetch("views/habitants.html")
                 .then(res => res.text())
@@ -113,7 +113,7 @@ function setupCreateForm(residentId = null) {
 }
 
 function loadResidents() {
-    fetch("http://127.0.0.1:8080/residents")
+    fetch("http://127.0.0.1:8080/api/residents")
         .then(res => res.json())
         .then(data => {
             const tbody = document.getElementById("residents-table-body");
@@ -146,6 +146,9 @@ function loadResidents() {
                     <td class="text-center">
                         <i class="bi bi-trash text-danger cursor-pointer btn-delete" data-id="${r.id}" title="Supprimer"></i>
                     </td>
+                    <td class="text-center">
+                        <i class="bi bi-envelope-fill text-warning cursor-pointer btn-send" data-id="${r.id}" title="Attribuer"></i>
+                    </td>
                 </tr>
             `).join('');
 
@@ -168,10 +171,31 @@ function loadResidents() {
                 icon.addEventListener("click", (e) => {
                     const id = e.target.dataset.id;
                     if (confirm(`Voulez-vous vraiment supprimer l'habitant avec ID ${id} ?`)) {
-                        fetch(`http://127.0.0.1:8080/residents/${id}`, { method: "DELETE" })
+                        fetch(`http://127.0.0.1:8080/api/residents/${id}`, { method: "DELETE" })
                             .then(res => {
                                 if (!res.ok) throw new Error("Erreur lors de la suppression");
                                 loadResidents();
+                            })
+                            .catch(err => alert(err.message));
+                    }
+                });
+            });
+
+            tbody.querySelectorAll(".btn-send").forEach(icon => {
+                icon.addEventListener("click", (e) => {
+                    const id = e.target.dataset.id;
+                    if (confirm(`Voulez-vous vraiment envoyer un mail d'attribution à l'habitant avec ID ${id} ?`)) {
+                        fetch(`http://127.0.0.1:8080/api/attributions/resident/${id}`, { method: "POST" })
+                            .then(res => {
+                                if (!res.ok) throw new Error("Erreur lors de l'attribution");
+                                return res.text();
+                            })
+                            .then(mail => {
+                                Swal.fire({
+                                    html: mail,
+                                    icon: 'success',
+                                    confirmButtonText: 'Fermer'
+                                });
                             })
                             .catch(err => alert(err.message));
                     }
@@ -182,7 +206,7 @@ function loadResidents() {
             const tbody = document.getElementById("residents-table-body");
             tbody.innerHTML = `
                 <tr>
-                    <td colspan="11" class="text-center">
+                    <td colspan="12" class="text-center">
                         <div class="alert alert-danger mb-0">Erreur de chargement</div>
                     </td>
                 </tr>
@@ -286,7 +310,17 @@ function loadGifts() {
             `).join('');
 
             tbody.querySelectorAll(".btn-modify").forEach(btn => {
-                btn.addEventListener("click", e => setupGiftForm(e.target.dataset.id));
+                btn.addEventListener("click", e => {
+                    const id = e.target.dataset.id;
+                    const contentDiv = document.getElementById("content");
+
+                    fetch("views/cadeauCreation.html")
+                        .then(res => res.text())
+                        .then(html => {
+                            contentDiv.innerHTML = html;
+                            setupGiftForm(id);
+                        });
+                });
             });
 
             tbody.querySelectorAll(".btn-delete").forEach(btn => {

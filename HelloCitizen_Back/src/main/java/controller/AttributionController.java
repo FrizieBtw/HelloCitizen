@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.*;
 import service.AttributionService;
 import service.ResidentService;
 
+@CrossOrigin(origins = "*")
 @RestController
 @RequestMapping("/api/attributions")
 class AttributionController {
@@ -25,8 +26,8 @@ class AttributionController {
     }
 
     @PostMapping("/resident/{id}")
-    public ResponseEntity<Attribution> getAttributionByResident(@PathVariable Long residentId) {
-        Attribution created = attributionService.addEmptyAttributionToResident(residentId);
-        return created == null ? ResponseEntity.notFound().build() : ResponseEntity.ok(created);
+    public ResponseEntity<String> addProposedAttribution(@PathVariable Long id) {
+        String mail = attributionService.addProposedAttribution(id);
+        return mail == null ? ResponseEntity.notFound().build() : ResponseEntity.ok(mail);
     }
 }

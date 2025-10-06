@@ -3,9 +3,12 @@ package service;
 import dao.AttributionDao;
 import dao.ResidentDao;
 import entity.Attribution;
+import entity.AttributionStatus;
 import entity.Resident;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.time.LocalDate;
 
 @Service
 public class AttributionService {
@@ -35,13 +38,22 @@ public class AttributionService {
         return attributionDao.save(attribution);
     }
 
-    public Attribution addEmptyAttributionToResident(Long residentId) {
+    public String addProposedAttribution(Long residentId) {
         Resident resident = residentDao.findById(residentId);
-        if (resident == null || attributionDao.findByResidentId(residentId) == null) {
+        if (resident == null || findByResidentId(residentId) != null) {
             return null;
         }
         Attribution attribution = new Attribution();
         attribution.setResident(resident);
-        return attributionDao.save(attribution);
+        attribution.setAttributionStatus(AttributionStatus.PROPOSED);
+        attribution.setPropositionDate(LocalDate.now());
+        attribution = save(attribution);
+        return String.format(
+            "<p>Bonjour %s %s,</p>" +
+            "<p>Félicitations pour votre première année d’habitation dans notre commune !</p>" +
+            "<p>Vous êtes éligible à un cadeau. Cliquez ici pour faire votre choix : " +
+            "<a href=\"http://localhost:3000/views/habitantChoix?attribution=%s\">Choisir mon cadeau</a></p>" +
+            "<p>Une fois choisi, vous pourrez indiquer votre adresse de livraison.</p>" +
+            "<p>Cordialement,<br>La Mairie d'Ussel</p>", attribution.getResident().getFirstName(), attribution.getResident().getLastName(), attribution.getId().toString());
     }
 }

@@ -7,6 +7,7 @@ import java.time.LocalDate;
 @Entity
 public class Attribution {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @OneToOne
@@ -29,6 +30,7 @@ public class Attribution {
     private String shippingAddress;
 
     private Double totalPrice;
+    private LocalDate propositionDate;
 
     public Long getId() {
         return id;
@@ -92,5 +94,13 @@ public class Attribution {
 
     public void setTotalPrice(Double totalPrice) {
         this.totalPrice = totalPrice;
+    }
+
+    public void setPropositionDate(LocalDate now) {
+        this.propositionDate = now;
+    }
+
+    public LocalDate getPropositionDate() {
+        return propositionDate;
     }
 }
