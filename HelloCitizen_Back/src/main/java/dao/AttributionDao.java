@@ -16,7 +16,7 @@ public class AttributionDao {
     private EntityManager em;
 
     public List<Attribution> findAll() {
-        return em.createQuery("SELECT r FROM Resident r", Attribution.class)
+        return em.createQuery("SELECT a FROM Attribution a", Attribution.class)
                 .getResultList();
     }
 
@@ -40,5 +40,10 @@ public class AttributionDao {
             return true;
         }
         return false;
+    }
+
+    public Attribution findByResidentId(Long residentId) {
+        return em.createQuery("SELECT a FROM Attribution a WHERE Attribution.resident = :residentId", Attribution.class)
+                .setParameter("residentId", residentId).getSingleResult();
     }
 }

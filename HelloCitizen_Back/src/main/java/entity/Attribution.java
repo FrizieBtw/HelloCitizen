@@ -10,7 +10,7 @@ public class Attribution {
     private Long id;
 
     @OneToOne
-    @JoinColumn(name = "resident_id")
+    @JoinColumn(name = "resident_id", nullable = false)
     private Resident resident;
 
     @ManyToOne

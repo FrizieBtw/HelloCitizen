@@ -19,6 +19,7 @@ public class ResidentController {
     public ResidentController(ResidentService residentService) {
         this.residentService = residentService;
     }
+
     // GET
     @GetMapping
     public List<Resident> getAllResidents() {
@@ -39,7 +40,6 @@ public class ResidentController {
     // POST
     @PostMapping
     public ResponseEntity<Resident> createResident(@RequestBody Resident resident) {
-        System.out.println(resident);
         Resident created = residentService.create(resident);
         return ResponseEntity.ok(created);
     }
@@ -47,8 +47,8 @@ public class ResidentController {
     // PUT{id}
     @PutMapping("/{id}")
     public ResponseEntity<Resident> updateResident(@PathVariable Long id, @RequestBody Resident residentDetails) {
-        Resident updated = residentService.update(id ,residentDetails);
-        if(updated == null) {
+        Resident updated = residentService.update(id, residentDetails);
+        if (updated == null) {
             return ResponseEntity.notFound().build();
         }
         return ResponseEntity.ok(updated);
@@ -56,8 +56,8 @@ public class ResidentController {
 
     // DELETE{id}
     @DeleteMapping("/{id}")
-    public ResponseEntity<?>  deleteResident(@PathVariable Long id) {
-        if(residentService.delete(id)) {
+    public ResponseEntity<?> deleteResident(@PathVariable Long id) {
+        if (residentService.delete(id)) {
             return ResponseEntity.ok("Resident deleted successfully");
         }
 
