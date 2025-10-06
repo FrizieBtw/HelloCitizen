@@ -1,18 +1,16 @@
 package service;
+
 import dao.GiftDao;
 import entity.Gift;
-import jakarta.persistence.Column;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
+import java.util.Date;
 import java.util.List;
 
 @Service
-public class GiftService
-{
+public class GiftService {
     private final GiftDao giftDao;
 
     @Autowired
@@ -24,18 +22,15 @@ public class GiftService
         return giftDao.findAll();
     }
 
-    public Gift findById(Long id)
-    {
+    public Gift findById(Long id) {
         return giftDao.findById(id);
     }
 
-    public Gift create(Gift gift)
-    {
+    public Gift create(Gift gift) {
         return giftDao.save(gift);
     }
 
-    public boolean delete(Long id)
-    {
+    public boolean delete(Long id) {
         return giftDao.delete(id);
     }
 
@@ -56,5 +51,16 @@ public class GiftService
 
 
         return giftDao.save(gift);
+    }
+
+    public List<Gift> findByDate(Date birthday) {
+        int age = calculateAge(birthday);
+        return giftDao.findByAge(age);
+    }
+
+    private int calculateAge(Date birthday) {
+        int year = LocalDate.now().getYear();
+        int birthdayYear = birthday.getYear();
+        return year - birthdayYear;
     }
 }

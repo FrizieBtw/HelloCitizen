@@ -2,10 +2,12 @@ package controller;
 
 import entity.Gift;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import service.GiftService;
 
+import java.util.Date;
 import java.util.List;
 
 @CrossOrigin(origins = "*")
@@ -57,4 +59,10 @@ public class GiftController {
         }
         return ResponseEntity.notFound().build();
     }
+
+    @GetMapping("/{birthday}")
+    public List<Gift> getGiftsByBirthday(@PathVariable @DateTimeFormat(pattern = "yyyy-MM-dd") Date birthday) {
+        return giftService.findByDate(birthday);
+    }
+
 }

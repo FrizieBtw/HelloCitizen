@@ -4,8 +4,9 @@ import entity.Gift;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import jakarta.transaction.Transactional;
-import java.util.List;
 import org.springframework.stereotype.Repository;
+
+import java.util.List;
 
 @Repository
 @Transactional
@@ -40,4 +41,14 @@ public class GiftDao {
         }
         return false;
     }
+
+    public List<Gift> findByAge(int age) {
+        return em.createQuery(
+                        "SELECT g FROM Gift g WHERE g.ageMin <= :age AND g.ageMax >= :age",
+                        Gift.class
+                )
+                .setParameter("age", age)
+                .getResultList();
+    }
+
 }
