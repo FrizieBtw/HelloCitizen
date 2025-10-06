@@ -40,7 +40,6 @@ public class ResidentController {
     // POST
     @PostMapping
     public ResponseEntity<Resident> createResident(@RequestBody Resident resident) {
-        System.out.println(resident);
         Resident created = residentService.create(resident);
         return ResponseEntity.ok(created);
     }
