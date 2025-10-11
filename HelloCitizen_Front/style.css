@@ -1,0 +1,14 @@
+#selectedImage img {
+  max-width: 96px;
+  max-height: 96px;
+  border-radius: 8px;
+}
+
+.carousel-item img {
+  max-height: 150px;
+  object-fit: contain;
+}
+
+.card:hover {
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.15);
+}
