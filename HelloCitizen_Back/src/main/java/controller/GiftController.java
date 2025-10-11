@@ -7,7 +7,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import service.GiftService;
 
-import java.util.Date;
+import java.sql.Date;
 import java.util.List;
 
 @CrossOrigin(origins = "*")

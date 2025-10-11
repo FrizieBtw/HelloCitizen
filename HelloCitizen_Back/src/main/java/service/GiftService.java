@@ -5,8 +5,9 @@ import entity.Gift;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.sql.Date;
 import java.time.LocalDate;
-import java.util.Date;
+import java.time.Period;
 import java.util.List;
 
 @Service
@@ -58,9 +59,9 @@ public class GiftService {
         return giftDao.findByAge(age);
     }
 
-    private int calculateAge(Date birthday) {
-        int year = LocalDate.now().getYear();
-        int birthdayYear = birthday.getYear();
-        return year - birthdayYear;
+    private int calculateAge(java.sql.Date birthday) {
+        if (birthday == null) return 0;
+        LocalDate birthDate = birthday.toLocalDate();
+        return Period.between(birthDate, LocalDate.now()).getYears();
     }
 }

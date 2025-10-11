@@ -233,6 +233,12 @@ function setupGiftForm(giftId = null) {
                 document.getElementById("minAge").value = data.ageMin;
                 document.getElementById("maxAge").value = data.ageMax;
                 document.getElementById("price").value = data.price;
+
+                if (data.image) {
+                    const preview = document.getElementById("imagePreview");
+                    preview.src = `data:image/png;base64,${data.image}`;
+                    preview.style.display = "block";
+                }
             });
     } else {
         title.textContent = "Créer un cadeau";
@@ -249,35 +255,53 @@ function setupGiftForm(giftId = null) {
         const ageMin = parseInt(document.getElementById("minAge").value);
         const ageMax = parseInt(document.getElementById("maxAge").value);
         const price = parseFloat(document.getElementById("price").value) || 0;
+        const imageFile = document.getElementById("image").files[0];
 
         if (!libelle || !codeBarres || isNaN(ageMin) || isNaN(ageMax)) {
             alert("Veuillez remplir tous les champs obligatoires : libellé, code-barres, âge minimum et maximum.");
             return;
         }
 
-        const gift = { libelle, codeBarres, ageMin, ageMax, price };
-        const id = giftIdInput.value;
-        const method = id ? "PUT" : "POST";
-        const url = id ? `http://localhost:8080/api/gifts/${id}` : "http://localhost:8080/api/gifts";
+        const reader = new FileReader();
+        reader.onloadend = () => {
+            const gift = {
+                libelle,
+                codeBarres,
+                ageMin,
+                ageMax,
+                price,
+                image: imageFile ? reader.result.split(",")[1] : null 
+            };
 
-        fetch(url, {
-            method,
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify(gift)
-        })
-        .then(res => {
-            if (!res.ok) throw new Error(`Erreur lors de ${id ? "la modification" : "la création"}`);
-            return res.json();
-        })
-        .then(data => {
-            alert(`Cadeau ${id ? "modifié" : "créé"} avec succès : ${data.libelle}`);
-            loadGifts();
-            form.reset();
-            giftIdInput.value = "";
-            title.textContent = "Créer un cadeau";
-            submitButton.textContent = "Créer";
-        })
-        .catch(err => alert(err.message));
+            const id = giftIdInput.value;
+            const method = id ? "PUT" : "POST";
+            const url = id ? `http://localhost:8080/api/gifts/${id}` : "http://localhost:8080/api/gifts";
+
+            fetch(url, {
+                method,
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(gift)
+            })
+            .then(res => {
+                if (!res.ok) throw new Error(`Erreur lors de ${id ? "la modification" : "la création"}`);
+                return res.json();
+            })
+            .then(data => {
+                alert(`Cadeau ${id ? "modifié" : "créé"} avec succès : ${data.libelle}`);
+                loadGifts();
+                form.reset();
+                giftIdInput.value = "";
+                title.textContent = "Créer un cadeau";
+                submitButton.textContent = "Créer";
+            })
+            .catch(err => alert(err.message));
+        };
+
+        if (imageFile) {
+            reader.readAsDataURL(imageFile);
+        } else {
+            reader.onloadend();
+        }
     };
 }
 

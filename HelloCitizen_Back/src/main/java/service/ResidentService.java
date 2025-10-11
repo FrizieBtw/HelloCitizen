@@ -1,20 +1,24 @@
 package service;
 
 import dao.ResidentDao;
+import entity.Gift;
 import entity.Resident;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.sql.Date;
 import java.util.List;
 
 @Service
 public class ResidentService {
 
     private final ResidentDao residentDao;
+    private final GiftService giftService;
 
     @Autowired
-    public ResidentService(ResidentDao residentDao) {
+    public ResidentService(ResidentDao residentDao, GiftService giftService) {
         this.residentDao = residentDao;
+        this.giftService = giftService;
     }
 
     public List<Resident> findAll() {
@@ -58,4 +62,9 @@ public class ResidentService {
         return residentDao.delete(id);
     }
 
+    public List<Gift> getGiftsByResidentId(Long id) {
+        Resident resident = residentDao.findById(id);
+        Date date = Date.valueOf(resident.getBirthday());
+        return giftService.findByDate(date);
+    }
 }

@@ -7,6 +7,8 @@ import org.springframework.web.bind.annotation.*;
 import service.AttributionService;
 import service.ResidentService;
 
+import java.util.Map;
+
 @CrossOrigin(origins = "*")
 @RestController
 @RequestMapping("/api/attributions")
@@ -29,5 +31,10 @@ class AttributionController {
     public ResponseEntity<String> addProposedAttribution(@PathVariable Long id) {
         String mail = attributionService.addProposedAttribution(id);
         return mail == null ? ResponseEntity.notFound().build() : ResponseEntity.ok(mail);
+    }
+
+    @PutMapping
+    public ResponseEntity<Attribution> updateAttribution(@RequestBody Map<String, Object> payload) {
+        return ResponseEntity.ok(attributionService.updateAttribution(payload));
     }
 }

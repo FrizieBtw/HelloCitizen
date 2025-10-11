@@ -1,5 +1,6 @@
 package controller;
 
+import entity.Gift;
 import entity.Resident;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -63,5 +64,15 @@ public class ResidentController {
 
         return ResponseEntity.notFound().build();
     }
+
+    @GetMapping("/{id}/gifts")
+    public ResponseEntity<List<Gift>> getGiftsByResidentId(@PathVariable Long id) {
+        List<Gift> gifts = residentService.getGiftsByResidentId(id);
+        if (gifts != null) {
+            return ResponseEntity.ok(gifts);
+        }
+        return ResponseEntity.notFound().build();
+    }
+
 
 }

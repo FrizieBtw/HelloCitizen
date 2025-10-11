@@ -96,11 +96,11 @@ public class Attribution {
         this.totalPrice = totalPrice;
     }
 
-    public void setPropositionDate(LocalDate now) {
-        this.propositionDate = now;
-    }
-
     public LocalDate getPropositionDate() {
         return propositionDate;
+    }
+
+    public void setPropositionDate(LocalDate now) {
+        this.propositionDate = now;
     }
 }

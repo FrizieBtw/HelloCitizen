@@ -24,6 +24,9 @@ public class Gift {
     @Column(nullable = false)
     private String libelle;
 
+    @Lob
+    private byte[] image;
+
     public Gift(Long id) {
         this.id = id;
     }
@@ -31,12 +34,12 @@ public class Gift {
     public Gift() {
     }
 
-    public void setId(Long id) {
-        this.id = id;
-    }
-
     public Long getId() {
         return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public Integer getAgeMin() {
@@ -67,6 +70,10 @@ public class Gift {
         return price;
     }
 
+    public void setPrice(Double price) {
+        this.price = price;
+    }
+
     public String getLibelle() {
         return libelle;
     }
@@ -75,7 +82,11 @@ public class Gift {
         this.libelle = libelle;
     }
 
-    public void setPrice(Double price) {
-        this.price = price;
+    public byte[] getImage() {
+        return image;
+    }
+
+    public void setImage(byte[] image) {
+        this.image = image;
     }
 }
