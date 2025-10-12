@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.util.List;
 import java.util.Map;
 
 @Service
@@ -24,6 +25,10 @@ public class AttributionService {
         this.attributionDao = attributionDao;
         this.residentDao = residentDao;
         this.giftService = giftService;
+    }
+
+    public List<Attribution> findAll() {
+        return attributionDao.findAll();
     }
 
     public Attribution findById(Long id) {

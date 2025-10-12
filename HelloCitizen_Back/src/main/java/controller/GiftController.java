@@ -60,7 +60,7 @@ public class GiftController {
         return ResponseEntity.notFound().build();
     }
 
-    @GetMapping("/{birthday}")
+    @GetMapping("/date/{birthday}")
     public List<Gift> getGiftsByBirthday(@PathVariable @DateTimeFormat(pattern = "yyyy-MM-dd") Date birthday) {
         return giftService.findByDate(birthday);
     }

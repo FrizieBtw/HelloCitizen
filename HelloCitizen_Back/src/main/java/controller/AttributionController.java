@@ -1,12 +1,14 @@
 package controller;
 
 import entity.Attribution;
+import entity.Gift;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import service.AttributionService;
 import service.ResidentService;
 
+import java.util.List;
 import java.util.Map;
 
 @CrossOrigin(origins = "*")
@@ -19,6 +21,11 @@ class AttributionController {
     @Autowired
     AttributionController(AttributionService attributionService, ResidentService residentService) {
         this.attributionService = attributionService;
+    }
+
+    @GetMapping
+    public List<Attribution> getAllAttributions() {
+        return attributionService.findAll();
     }
 
     @GetMapping("/{id}")
