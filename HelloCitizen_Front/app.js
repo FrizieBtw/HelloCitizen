@@ -19,6 +19,8 @@ document.addEventListener("DOMContentLoaded", () => {
                             loadGifts();
                         } else if (view.includes("cadeauCreation.html")) {
                             setupGiftForm();
+                        } else if (view.includes("attributions.html")) {
+                            loadAttributions();
                         }
                     }, 0);
                 });
@@ -26,14 +28,15 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 });
 
-function setupCreateForm(residentId = null) {
+function setupCreateForm(residentId = null, read = false) {
     const form = document.getElementById("createResidentForm");
     const formTitle = document.getElementById("formTitle");
     const submitButton = document.getElementById("submitButton");
     const idInput = document.getElementById("residentId");
 
     if (residentId) {
-        formTitle.textContent = "Modifier un habitant";
+
+        formTitle.textContent = read ? "Détails de l'habitant" : "Modifier un habitant";
         submitButton.textContent = "Modifier";
 
         fetch(`http://127.0.0.1:8080/api/residents/${residentId}`)
@@ -48,6 +51,14 @@ function setupCreateForm(residentId = null) {
                 document.getElementById("address").value = data.address || "";
                 document.getElementById("arrivalDate").value = data.arrivalDate;
                 document.getElementById("notificationDate").value = data.notificationDate || "";
+
+                if (read) {
+                    form.querySelectorAll("input, select, textarea").forEach(field => {
+                        field.disabled = true;
+                    });
+                    submitButton.style.display = 'none';
+                }
+                
             });
     } else {
         formTitle.textContent = "Créer un habitant";
@@ -214,14 +225,14 @@ function loadResidents() {
         });
 }
 
-function setupGiftForm(giftId = null) {
+function setupGiftForm(giftId = nullis, read = false) {
     const form = document.getElementById("createGiftForm");
     const title = document.getElementById("formTitle");
     const submitButton = document.getElementById("submitButton");
     const giftIdInput = document.getElementById("giftId");
 
     if (giftId) {
-        title.textContent = "Modifier un cadeau";
+        title.textContent = read ? "Détails du cadeau" : "Modifier un cadeau";
         submitButton.textContent = "Modifier";
 
         fetch(`http://localhost:8080/api/gifts/${giftId}`)
@@ -233,6 +244,13 @@ function setupGiftForm(giftId = null) {
                 document.getElementById("minAge").value = data.ageMin;
                 document.getElementById("maxAge").value = data.ageMax;
                 document.getElementById("price").value = data.price;
+
+                if (read) {
+                    form.querySelectorAll("input, select, textarea").forEach(field => {
+                        field.disabled = true;
+                    });
+                    submitButton.style.display = 'none';
+                }
 
                 if (data.image) {
                     const preview = document.getElementById("imagePreview");
@@ -363,6 +381,72 @@ function loadGifts() {
         })
         .catch(() => {
             document.getElementById("gifts-table-body").innerHTML = `
+                <tr><td colspan="8" class="text-center"><div class="alert alert-danger mb-0">Erreur de chargement</div></td></tr>`;
+        });
+}
+
+function loadAttributions() {
+    fetch("http://localhost:8080/api/attributions")
+        .then(res => res.json())
+        .then(data => {
+            const tbody = document.getElementById("attributions-table-body");
+            if (!data.length) {
+                tbody.innerHTML = `<tr><td colspan="8" class="text-center"><div class="alert alert-warning mb-0">Aucune attribution trouvée.</div></td></tr>`;
+                return;
+            }
+
+            tbody.innerHTML = data.map(a => `
+                <tr>
+                    <td>${a.id}</td>
+                    <td>
+                        ${a.resident ? `${a.resident.firstName} ${a.resident.lastName}` : "-"}
+                        ${a.resident ? `<i class="bi bi-person-fill text-primary cursor-pointer btn-view-resident ms-2" data-resident-id="${a.resident.id}" title="Voir l'habitant"></i>` : ''}
+                    </td>
+                    <td>
+                        ${a.gift ? a.gift.libelle : "-"}
+                        ${a.gift ? `<i class="bi bi-eye-fill text-info cursor-pointer btn-view-gift ms-2" data-gift-id="${a.gift.id}" title="Voir le cadeau"></i>` : ''}
+                    </td>
+                    <td>${a.attributionStatus || "-"}</td>
+                    <td>${a.propositionDate || "-"}</td>
+                    <td>${a.choiceDate || "-"}</td>
+                    <td>${a.shippingAddress || "-"}</td>
+                    <td>${a.totalPrice ? a.totalPrice.toFixed(2) + ' €' : "-"}</td>
+                </tr>
+            `).join('');
+            
+            tbody.querySelectorAll(".btn-view-gift").forEach(icon => {
+                icon.addEventListener("click", (e) => {
+                    const giftId = e.target.dataset.giftId;
+                    const contentDiv = document.getElementById("content");
+                    fetch("views/cadeauCreation.html")
+                        .then(res => res.text())
+                        .then(html => {
+                            contentDiv.innerHTML = html;
+                            setTimeout(() => {
+                                setupGiftForm(giftId, true);
+                            }, 0);
+                        });
+                });
+            });
+
+            tbody.querySelectorAll(".btn-view-resident").forEach(icon => {
+                icon.addEventListener("click", (e) => {
+                    const residentId = e.target.dataset.residentId;
+                    const contentDiv = document.getElementById("content");
+                    fetch("views/habitantCreation.html")
+                        .then(res => res.text())
+                        .then(html => {
+                            contentDiv.innerHTML = html;
+                            setTimeout(() => {
+                                setupCreateForm(residentId, true);
+                            }, 0);
+                        });
+                });
+            });
+        })
+        .catch(() => {
+            const tbody = document.getElementById("attributions-table-body");
+            tbody.innerHTML = `
                 <tr><td colspan="8" class="text-center"><div class="alert alert-danger mb-0">Erreur de chargement</div></td></tr>`;
         });
 }
