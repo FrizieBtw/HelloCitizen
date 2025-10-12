@@ -73,16 +73,17 @@ Pour le développement de l’application de gestion et d’attribution des cade
 
 - **Spring Boot** pour créer rapidement une API REST.
 - **JPA / Hibernate** pour la gestion des entités et la persistance en base de données. Issue de Jarkarta anciennement JEE.
-- **MySQL / H2** comme base de données relationnelle pour stocker les résidents, cadeaux et attributions.
-- Gestion des exceptions et validations côté serveur pour assurer l’intégrité des données.
+- **H2** comme base de données relationnelle pour stocker les résidents, cadeaux et attributions.
 - H2 nous a permis de faire une base de données embarqué dans l'api pour que vous puissiez utiliser notre application rapidement.
+- Utilisé en entreprise par la majorité des personnes ayant travaillé sur le projet, ce qui a permis une prise en main rapide.
 
 ### Frontend (HTML / CSS / JS / Bootstrap)
 
 - **Bootstrap 5** pour une interface responsive et moderne et sans prise de tête.
 - **JavaScript vanilla** pour la logique de sélection de cadeau et la communication avec l’API.
-- Affichage dynamique des cadeaux avec gestion des images ou icônes par défaut.
+- Affichage dynamique des cadeaux.
 - Validation de formulaire côté client avant envoi à l’API.
+- Pas de complication avec l'utilisation d'un framework front.
 
 ### Communication client-serveur
 
@@ -108,48 +109,45 @@ L’application expose plusieurs endpoints REST pour gérer les résidents, les 
 
 ### Gestion des résidents
 
-| Endpoint              | Méthode | Description           | Body / Paramètres                                                                                                                                                                                                             | Réponse                             |
-| --------------------- | ------- | --------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------- |
-| `/api/residents`      | POST    | Créer un résident     | `json { "firstName": "Nuno", "lastName": "Moreira", "birthday": "2008-04-15", "email": "nuno@mail.com", "number": "0600000000", "address": "1 rue Exemple", "arrivalDate": "2025-01-01", "notificationDate": "2025-12-01" } ` | JSON du résident créé avec son `id` |
-| `/api/residents/{id}` | DELETE  | Supprimer un résident | id (path)                                                                                                                                                                                                                     | JSON vide                           |
+| Endpoint              | Méthode | Description           | Body / Paramètres                                                                                                                                                                                                          | Réponse                             |
+| --------------------- | ------- | --------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------- |
+| `/api/residents`      | POST    | Créer un résident     | `json { "firstName": "Nuno", "lastName": "Moreira", "birthday": "2008-04-15", "email": "nuno@mail.com", "number": "0600000000", "address": "1 rue Jean", "arrivalDate": "2025-01-01", "notificationDate": "2025-12-01" } ` | JSON du résident créé avec son `id` |
+| `/api/residents/{id}` | DELETE  | Supprimer un résident | id (path)                                                                                                                                                                                                                  | JSON vide                           |
 
 ---
 
 ### Gestion des attributions
 
-| Endpoint                          | Méthode | Description                                           | Body / Paramètres                                                                                        | Réponse                           |
-| --------------------------------- | ------- | ----------------------------------------------------- | -------------------------------------------------------------------------------------------------------- | --------------------------------- |
-| `/api/attributions/resident/{id}` | POST    | Proposer un cadeau à un résident                      | id (path)                                                                                                | Message de confirmation           |
-| `/api/attributions`               | PUT     | Mettre à jour une attribution (choix, email, adresse) | `json { "residentId": 123, "giftId": 5, "email": "nuno@mail.com", "deliveryAddress": "1 rue Exemple" } ` | JSON de l’attribution mise à jour |
-| `/api/attributions/{id}`          | GET     | Récupérer une attribution                             | id (path)                                                                                                | JSON complet de l’attribution     |
-
----
-
-### Gestion des emails
-
-| Endpoint       | Méthode | Description      | Body                             | Réponse                 |
-| -------------- | ------- | ---------------- | -------------------------------- | ----------------------- |
-| `/api/courier` | POST    | Envoyer un email | `"Contenu du message à envoyer"` | Message de confirmation |
+| Endpoint                          | Méthode | Description                                           | Body / Paramètres                                                                                     | Réponse                           |
+| --------------------------------- | ------- | ----------------------------------------------------- | ----------------------------------------------------------------------------------------------------- | --------------------------------- |
+| `/api/attributions/resident/{id}` | POST    | Proposer un cadeau à un résident                      | id (path)                                                                                             | Message de confirmation           |
+| `/api/attributions`               | PUT     | Mettre à jour une attribution (choix, email, adresse) | `json { "residentId": 123, "giftId": 5, "email": "nuno@mail.com", "deliveryAddress": "1 rue Jean" } ` | JSON de l’attribution mise à jour |
+| `/api/attributions/{id}`          | GET     | Récupérer une attribution                             | id (path)                                                                                             | JSON complet de l’attribution     |
 
 ---
 
 ## Tutoriel
 
-Vous trouverez à la racine de notre projet, à côté de ce fichier Markdown, un fichier `.exe` que vous pouvez exécuter. Celui-ci va automatiquement lancer l’API et créer la base de données.
+Vous trouverez à la racine de notre projet, à côté de ce fichier Markdown, un fichier `.exe` que vous pouvez exécuter. Celui-ci lancera automatiquement l’API et créera la base de données. Nous avons créé cet EXE avec un JRE intégré afin que vous n’ayez aucun problème lié à une version de Java différente.
 
 Ensuite, vous pourrez aller dans le dossier `front` et exécuter les commandes suivantes pour lancer le serveur web et permettre les appels à l’API :
+
+Attention Node.js doit être installé sur votre machine.
+Voici un tutoriel d’installation que nous avons trouvé sur Internet, si besoin :
+
+### Installer Node.js
+
+1. Aller sur le site officiel : [https://nodejs.org](https://nodejs.org)
+2. Télécharger la version **LTS (Long Term Support)** (exemple : 20.x LTS).
+3. Lancer l’installeur téléchargé (`.msi`).
+4. Suivre les étapes, en laissant les options par défaut.
+   > ⚠️ Vérifier que l’option **Add to PATH** est cochée.
 
 ### Avec npm
 
 ```bash
-cd front
-npm install
-npm start
+cd HelloCitizen_Front
+npx serve .
 ```
 
-### Avec python
-
-```bash
-cd front
-python -m http.server 3000
-```
+L'application est ensuite disponible sur https://localhost:3000

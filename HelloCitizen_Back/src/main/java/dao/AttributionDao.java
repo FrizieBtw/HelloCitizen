@@ -4,7 +4,6 @@ import entity.Attribution;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import jakarta.transaction.Transactional;
-import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -50,6 +49,6 @@ public class AttributionDao {
                 .setParameter("residentId", residentId)
                 .getResultList();
 
-        return results.isEmpty() ? null : results.getFirst();
+        return results.isEmpty() ? null : results.get(0);
     }
 }

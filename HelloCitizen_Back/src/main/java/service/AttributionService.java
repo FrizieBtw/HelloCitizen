@@ -52,6 +52,10 @@ public class AttributionService {
         if (resident == null || findByResidentId(residentId) != null) {
             return null;
         }
+        
+        resident.setNotificationDate(LocalDate.now());
+        residentDao.save(resident);
+
         Attribution attribution = new Attribution();
         attribution.setResident(resident);
         attribution.setAttributionStatus(AttributionStatus.PROPOSED);

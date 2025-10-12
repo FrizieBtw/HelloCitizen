@@ -225,7 +225,7 @@ function loadResidents() {
         });
 }
 
-function setupGiftForm(giftId = nullis, read = false) {
+function setupGiftForm(giftId = null, read = false) {
     const form = document.getElementById("createGiftForm");
     const title = document.getElementById("formTitle");
     const submitButton = document.getElementById("submitButton");
