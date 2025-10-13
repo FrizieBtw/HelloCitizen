@@ -87,9 +87,9 @@ Pour le développement de l’application de gestion et d’attribution des cade
 ### Backend (Java / Spring Boot)
 
 - **Spring Boot** pour créer rapidement une API REST.
-- **JPA / Hibernate** pour la gestion des entités et la persistance en base de données. Issue de Jarkarta anciennement JEE.
+- **JPA / Hibernate** pour la gestion des entités et la persistance en base de données. Issue de Jakarta anciennement JEE.
 - **H2** comme base de données relationnelle pour stocker les résidents, cadeaux et attributions.
-- H2 nous a permis de faire une base de données embarqué dans l'api pour que vous puissiez utiliser notre application rapidement.
+- H2 nous a permis de faire une base de données embarquée dans l'API pour que vous puissiez utiliser notre application rapidement.
 - Utilisé en entreprise par la majorité des personnes ayant travaillé sur le projet, ce qui a permis une prise en main rapide.
 
 ### Frontend (HTML / CSS / JS / Bootstrap)
@@ -145,7 +145,7 @@ L’application expose plusieurs endpoints REST pour gérer les résidents, les 
 
 Vous trouverez à la racine de notre projet, à côté de ce fichier Markdown, un fichier `.exe` que vous pouvez exécuter. Celui-ci lancera automatiquement l’API et créera la base de données. Nous avons créé cet EXE avec un JRE intégré afin que vous n’ayez aucun problème lié à une version de Java différente.
 
-Ensuite, vous pourrez aller dans le dossier `front` et exécuter les commandes suivantes pour lancer le serveur web et permettre les appels à l’API :
+Ensuite, vous pourrez aller dans le dossier `HelloCitizen_Front` et exécuter les commandes suivantes pour lancer le serveur web et permettre les appels à l’API :
 
 Attention Node.js doit être installé sur votre machine.
 Voici un tutoriel d’installation que nous avons trouvé sur Internet, si besoin :
