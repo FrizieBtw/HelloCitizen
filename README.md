@@ -12,6 +12,21 @@ Elle permet de :
 
 Plus sérieusement, voici notre dossier de conception avec l'explication de nos choix techniques. Vous y trouverez également une section détaillant nos endpoints ainsi qu'un tutoriel pour tester notre application.
 
+## Table des matières
+
+- [Conception du projet](#conception-du-projet)
+- [Choix techniques](#choix-techniques)
+  - [Backend (Java / Spring Boot)](#backend-java--spring-boot)
+  - [Frontend (HTML / CSS / JS / Bootstrap)](#frontend-html--css--js--bootstrap)
+  - [Communication client-serveur](#communication-client-serveur)
+- [Endpoints API](#endpoints-api)
+  - [Gestion des cadeaux](#gestion-des-cadeaux)
+  - [Gestion des résidents](#gestion-des-résidents)
+  - [Gestion des attributions](#gestion-des-attributions)
+- [Tutoriel](#tutoriel)
+  - [Installer Node.js](#installer-nodejs)
+  - [Avec npm](#avec-npm)
+
 ## Conception du projet
 
 Vous trouverez ci-dessous les documents de conception détaillant l'architecture et les processus du projet. Cliquez sur un aperçu ou sur le titre pour ouvrir le PDF correspondant.
